@@ -51,3 +51,8 @@ npx hardhat run scripts/deploy.js
 npx hardhat run scripts/deploy.js
 REPORT_GAS=true npx hardhat test
 ```
+
+## Output
+
+<img width="838" alt="Screenshot 2023-05-23 at 4 35 27 PM" src="https://github.com/Raj-Mehta2012/INFO7500_Crypto/assets/61338379/52a49816-49fd-423f-842f-d5e787390fdb">
+
