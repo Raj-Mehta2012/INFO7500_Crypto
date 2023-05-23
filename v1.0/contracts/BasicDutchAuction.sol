@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: MIT
+// Author: Raj Mehta
+// Version : 1.0
 
 pragma solidity >=0.7.0 <0.9.0;
 
@@ -46,14 +48,16 @@ contract BasicDutchAuction {
 
         donor = msg.sender;
         finalPrice = price();
+
         (bool sentFinalPriceETH,) = owner.call{value:finalPrice}("");
         require(sentFinalPriceETH, "Ether transfer to donor addrress is failed");
-        // console.log("amount sent ", msg.value, "final price ", finalPrice);
+        console.log("amount sent ", msg.value, "final price ", finalPrice);
+
         if(msg.value > finalPrice){
-        // console.log("amount to be transferred ", contractAddress.balance);
-        (bool sentRemainingETH,) = msg.sender.call{value: msg.value - finalPrice}("");
-        require(sentRemainingETH, "Couldn't send remaining ether");
-        // console.log("Balance after transfer ", contractAddress.balance);
+            console.log("amount to be transferred ", contractAddress.balance);
+            (bool sentRemainingETH,) = msg.sender.call{value: msg.value - finalPrice}("");
+            require(sentRemainingETH, "Couldn't send remaining ether");
+            console.log("Balance after transfer ", contractAddress.balance);
         }
     }
 }
