@@ -50,6 +50,9 @@ npx hardhat run scripts/deploy.js
 ```shell
 npx hardhat run scripts/deploy.js
 REPORT_GAS=true npx hardhat test
+
+// to get solidity-coverage
+npx hardhat coverage
 ```
 
 ## Output
