@@ -1,4 +1,4 @@
-# Project: Dutch Auction
+# Smart Contract: Dutch Auction
 
 This project asks you to build a decentralized application for a Dutch Auction. The project has multiple milestones, one due every week until the last class of the semester. Each milestone will build upon the work of previous milestones. As noted in the syllabus, you have seven late-days across all homeworks throughout the semester.
 
