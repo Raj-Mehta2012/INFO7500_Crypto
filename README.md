@@ -1,2 +1,146 @@
-# INFO7500_Crypto
+# Smart Contract: Dutch Auction
+
+This project asks you to build a decentralized application for a Dutch Auction. The project has multiple milestones, one due every week until the last class of the semester. Each milestone will build upon the work of previous milestones. As noted in the syllabus, you have seven late-days across all homeworks throughout the semester.
+
+Each milestone is due on the date specified in the table below. Submit each completed milestone to canvas as a link to a GitHub repo and a tagged commit with the version #.
+
+## Grading
+
+Smart contract grading is purely based on:
+- Writing enough test cases that achieve 100% line and 100% branch coverage on your Solidity code.
+- Having thorough enough expectations in each test case.
+
+## Schedule
+
+| Version # | Milestone                          | 
+|-----------|------------------------------------|
+| v1.0      | BasicDutchAuction.sol              | 
+| v2.0      | NFTDuctionAuction.sol              | 
+| v3.0      | NFTDuctionAuction_ERC20Bids.sol    |
+| v4.0      | Upgradeability                     | 
+| v5.0      | Offchain signing                   | 
+| v6.0      | UI for BasicDutchAuction.sol       | 
+| v7.0      | UI Deployment                      | 
+
+## Reading
+
+- Ethereum smart contract security. Note that your score on the homework will be reduced if you submit insecure code.
+- Hardhat. Go through their tutorials.
+- Solidity test coverage reporting. You must generate coverage reports for your tests.
+- Dutch auctions
+- BasicDutchAuction.sol: an incomplete, skeletal implementation of a Dutch auction that you'll use for v1.0
+- Dutch Auction sample tests: Read through these old tests for the DutchAuction contract. You may use them to check your implementation, but you'll likely need to rewrite them to work with Hardhat. They were previously written for Truffle.
+- OpenZeppelin contracts: Use the ERC20, ERC721, and upgrade proxy from OpenZeppelin. Do not implement your own.
+- ReactJS: ReactJS is a large framework; you probably only need to know <5% of the framework to successfully do this assignment. Use Typescript instead of Javascript as much as you can. It will make development easier as your app gets more complicated.
+- Metamask
+- IPFS
+
+## Version 1.0
+
+1. Create a new directory in your GitHub repo called v1.0 and initialize a new Hardhat project.
+2. Create a new contract called BasicDutchAuction.sol that implements a Dutch auction as described below.
+3. Write test cases to thoroughly test your contracts. Generate a Solidity coverage report and commit it to your repository.
+  - `reservePrice`: the minimum amount of wei that the seller is willing to accept for the item.
+  - `numBlocksAuctionOpen`: the number of blockchain blocks that the auction is open for.
+  - `offerPriceDecrement`: the amount of wei that the auction price should decrease by during each subsequent block.
+- The seller is the owner of the contract.
+- The auction begins at the block in which the contract is created.
+- The initial price of the item is derived from `reservePrice`, `numBlocksAuctionOpen`, and `offerPriceDecrement`: `initialPrice = reservePrice + numBlocksAuctionOpen * offerPriceDecrement`.
+- A bid can be submitted by any Ethereum externally-owned account.
+- The first bid processed by the contract that sends wei greater than or equal to the current price is the winner. The wei should be transferred immediately to the seller, and the contract should not accept any more bids. All bids besides the winning bid should be refunded immediately.
+
+## Version 2.0
+
+1. Read the ERC721 EIP and OpenZeppelin implementation.
+2. Create a new directory in your GitHub repo called v2.0 and initialize a new Hardhat project.
+3. Copy over any files you can reuse from the previous versions of this project into the directory for this version.
+4. Understand how the ERC721 contract works by downloading an off-the-shelf version from OpenZeppelin, and write test cases to understand how to create NFT contracts, how to mint NFTs, and how to transfer them. ERC721 is the official name for Ethereum's NFT contract specification.
+5. To add contracts from OpenZeppelin into your project, definitely use npm to download them. The OpenZeppelin contracts have a lot of dependencies, and thus copying and pasting them will 1) take a lot of time, 2) make it hard to upgrade to newer versions, 3) increase the vulnerability scope of your project, and 4) make it more likely for those contracts to get changed by you or your team.
+6. Create a new contract called NFTDutchAuction.sol. It should have the same functionality as BasicDutchAuction.sol but sells an NFT instead of a physical item. The constructor for the NFTDutchAuction.sol should be:
+   `constructor(address erc721TokenAddress, uint256 _nftTokenId, uint256 _reservePrice, uint256 _numBlocksAuctionOpen, uint256 _offerPriceDecrement)`
+7. Write test cases to thoroughly test your contracts. Generate a Solidity coverage report and commit it to your repository under this version's directory.
+
+## Version 3.0
+
+1. Create a new directory in your GitHub repo called v3.0 and initialize a new Hardhat project.
+2. Copy over any files you can reuse from the previous versions of this project into the directory for this version.
+3. Create a new contract called NFTDutchAuction_ERC20Bids.sol. It should have the same functionality as NFTDutchAuction.sol but accept only ERC20 bids instead of Ether.
+4. The constructor for the NFTDutchAuction_ERC20Bids.sol should be:
+   `constructor(address erc20TokenAddress, address erc721TokenAddress, uint256 _nftTokenId, uint256 _reservePrice, uint256 _numBlocksAuctionOpen, uint256 _offerPriceDecrement)`
+5. Write test cases to thoroughly test your contracts. Generate a Solidity coverage report and commit it to your repository under this version's directory.
+
+Version 4.0
+
+1. Add an upgrade proxy to make your NFTDutchAuction_ERC20Bids.sol upgradeable. You don't need to make the NFT or ERC20 contracts upgradeable, just the DutchAuction contract.
+2. Read the documentation on upgradeable contracts.
+3. Use the UUPS proxy instead of a transparent proxy: [UUPS Proxy Documentation](https://docs.openzeppelin.com/contracts/4.x/api/proxy)
  
+Version 5.0
+
+1. Read the [EIP-2612](https://eips.ethereum.org/EIPS/eip-2612).
+2. Read the [EIP-712](https://eips.ethereum.org/EIPS/eip-712).
+3. Add ERC20Permit functionality to your ERC20 implementation.
+4. Write test cases to cover the permit functionality in the context of submitting a bid to your NFTDutchAuction_ERC20Bids.
+
+Version 6.0
+
+1. Create a new directory in your GitHub repo called v6.0 and initialize a new Hardhat project.
+2. Implement a ReactJS user interface for your BasicDutchAuction.sol. The UI should enable a user to:
+   - Deploy a new BasicDutchAuction and specify all the parameters for its constructor.
+   - Look up a specific BasicDutchAuction by its address, view important information about the contract, and
+   - Submit a bid.
+3. The UI should have three sections. Feel free to use the following layouts in your app, or something similar.
+   - **Section 1: Deployment**
+     - Inputs:
+       - A textbox for each parameter in the constructor.
+       - A button called "Deploy".
+     - Outputs:
+       - A label with the address of the newly created BasicDutchAuction.
+   - **Section 2: Look up info on an auction**
+     - Inputs:
+       - A textbox for the address of a BasicDutchAuction.
+       - A button called "Show Info".
+     - Outputs:
+       - A label for each property of the BasicDutchAuction:
+         - Winner, if one already exists.
+         - Constructor parameters.
+         - Current price.
+   - **Section 3: Submit a bid**
+     - Input:
+       - A textbox for the address of a BasicDutchAuction.
+       - A textbox for the bid.
+       - A button called "Bid".
+     - Outputs:
+       - A label indicating whether the bid was accepted as the winner or not.
+4. Suggestions:
+   - Note that this project is a web3 application, and thus should not need a server.
+   - You may use the following links as starting points for your implementation, but note that their ReactJS code is a lot more than what's needed for this assignment. We suggest that you use it as an example to learn from, but that you actually implement your UI from scratch and only include the code you need from the example.
+     - [Using MetaMask with a Hardhat node](https://support.chainstack.com/hc/en-us/articles/4408642503449-Using-MetaMask-with-a-Hardhat-node)
+     - [How to Build a React DApp with Hardhat and MetaMask](https://www.web3.university/article/how-to-build-a-react-dapp-with-hardhat-and-metamask)
+   - You may use this starter repo: [Hardhat Ethers React TypeScript Starter](https://github.com/ChainShot/hardhat-ethhat-ethers-react-ts-starter)
+
+Version 7.0
+
+1. Deploy your Version 6.0 dapp on an Ethereum testnet.
+   - This step will require getting test ETH from a faucet.
+   - Sometimes these faucets can be unreliable, so you'll have to keep searching online for a faucet that gives you enough ETH to successfully deploy your contract.
+   - Hardhat can deploy your contracts for you: [Deploying to a Live Network](https://hardhat.org/tutorial/deploying-to-a-live-network)
+2. Host your UI through IPFS.
+   - You will host your UI on your own machine, and you will use IPFS to enable others to access it through an `ipfs://` URL.
+   - Get the CID of your build directory that contains your built UI, and prefix the CID with "ipfs://".
+   - For example, if your CID is `QmRgCTtKd91QkgoTiJQky57pCRda2drKEvTyFkUznaoKm3`, the URL to access the content is `ipfs://QmRgCTtKd91QkgoTiJQky57pCRda2drKEvTyFkUznaoKm3`.
+3. Steps:
+   - Generate build files for your UI.
+   - Install IPFS desktop and IPFS browser plugin.
+   - Pin your UI build files to your IPFS Desktop node.
+   - Add the IPFS URL to your `README.md` file in your repo.
+4. Final Output:
+   - Show that your contracts are deployed on a testnet.
+   - Show that your UI is accessible by anyone through the IPFS URL.
+   - Show that users can interact with your UI through IPFS and the MetaMask plugin by:
+     - Deploying a new BasicDutchAuction.
+     - Submitting a winning bid.
+5. Use IPNS to generate a fixed name for your UI: [Mutability in IPFS](https://docs.ipfs.tech/concepts/ipns/#mutability-in-ipfs)
+
+TODO: Add more versions based on these Solidity patterns:
+- [Useful Solidity Patterns](https://github.com/dragonfly-xyz/useful-solidity-patterns)
