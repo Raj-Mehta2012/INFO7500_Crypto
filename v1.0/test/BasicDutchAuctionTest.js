@@ -83,7 +83,27 @@ const {
         await contract.deployed();
         expect(await contract.checkbalance()).to.equal(0);
       });
-      
+
+      it("Reverts if ether transfer to the donor address fails", async function () {
+        const { basicdutchauction, owner, otherAccount } = await loadFixture(BasicDutchAuctiondeploy);
+        console.log("Owner: ", owner);
+        const bigNum = BigInt("6000000000000000000");
+    
+        // Mock a failure during the ether transfer
+        const mockTransfer = false;
+        const mockCallReturnValue = [mockTransfer, "Ether transfer to donor address is failed"]; // Failure and an error message
+    
+        // Mock the `call` function to return the desired result
+        owner.call = async () => {
+            console.log("Mock call function called");
+            return mockCallReturnValue;
+        };
+    
+        await expect(basicdutchauction.connect(otherAccount).receiveMoney({ value: bigNum })).to.be.revertedWith('Ether transfer to donor address is failed');
+    });
+    
+    
+  
   
     });
   
