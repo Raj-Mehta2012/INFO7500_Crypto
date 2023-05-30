@@ -4,12 +4,6 @@ This project asks you to build a decentralized application for a Dutch Auction. 
 
 Each milestone is due on the date specified in the table below. Submit each completed milestone to canvas as a link to a GitHub repo and a tagged commit with the version #.
 
-## Grading
-
-Smart contract grading is purely based on:
-- Writing enough test cases that achieve 100% line and 100% branch coverage on your Solidity code.
-- Having thorough enough expectations in each test case.
-
 ## Schedule
 
 | Version # | Milestone                          | 
