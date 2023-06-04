@@ -1,4 +1,6 @@
-//SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
+// Author: Raj Mehta
+// Version : 2.0
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
