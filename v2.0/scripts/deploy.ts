@@ -1,19 +1,28 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+  // Deploy the TechnoCleverNFT contract
+  const TechnoCleverNFT = await ethers.getContractFactory("DUTCH_NFT");
+  const technoCleverNFT = await TechnoCleverNFT.deploy();
+  await technoCleverNFT.deployed();
+  console.log(`DUTCH_NFT deployed to ${technoCleverNFT.address}`);
 
-  const lockedAmount = ethers.utils.parseEther("0.001");
+  // Deploy the NFTDutchAuction contract
+  const nftTokenId = 1;
+  const reservePrice = ethers.utils.parseEther("1");
+  const numBlocksAuctionOpen = 100;
+  const offerPriceDecrement = ethers.utils.parseEther("0.01");
 
-  const Lock = await ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-  await lock.deployed();
-
-  console.log(
-    `Lock with ${ethers.utils.formatEther(lockedAmount)}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
+  const NFTDutchAuction = await ethers.getContractFactory("NFTDutchAuction");
+  const nftDutchAuction = await NFTDutchAuction.deploy(
+    technoCleverNFT.address,
+    nftTokenId,
+    reservePrice,
+    numBlocksAuctionOpen,
+    offerPriceDecrement
   );
+  await nftDutchAuction.deployed();
+  console.log(`NFTDutchAuction deployed to ${nftDutchAuction.address}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
