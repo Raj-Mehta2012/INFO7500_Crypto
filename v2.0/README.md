@@ -11,6 +11,8 @@ npm install @nomicfoundation/hardhat-toolbox
 npm install @openzeppelin/contracts
 ```
 
+## Run Commands
+
 ```shell
 npx hardhat help
 npx hardhat test
