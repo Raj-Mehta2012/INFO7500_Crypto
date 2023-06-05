@@ -22,3 +22,6 @@ npx hardhat run scripts/deploy.ts
 npx hardhat coverage
 ```
 
+## Coverage
+
+![Coverage](https://github.com/Raj-Mehta2012/INFO7500_Crypto/blob/main/v2.0/screenshots/v2.0_coverage.png)
