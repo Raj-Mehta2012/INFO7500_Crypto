@@ -24,8 +24,10 @@ npx hardhat run scripts/deploy.ts
 npx hardhat coverage
 ```
 
-## TestCases and Coverage
+## TestCases
 
 ![Test_Cases](https://github.com/Raj-Mehta2012/INFO7500_Crypto/blob/main/v2.0/screenshots/TestCases.png)
+
+## Coverage
 
 ![Coverage](https://github.com/Raj-Mehta2012/INFO7500_Crypto/blob/main/v2.0/screenshots/v2.0_coverage.png)
