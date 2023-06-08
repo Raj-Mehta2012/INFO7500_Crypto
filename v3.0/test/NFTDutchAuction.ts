@@ -2,7 +2,9 @@ import { time, loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import "@nomiclabs/hardhat-ethers";
 import { ethers } from "hardhat";
 import {expect} from 'chai'
+import { NFTDutchAuctionERC20 } from "../typechain-types";
 const hre = require("hardhat");
+// const { ERC20, ERC721 } = require("@openzeppelin/contracts");
 
 const _reservePrice = "100";
 const _numBlocksAuctionOpen = 50;
@@ -183,5 +185,103 @@ describe("DutchAuction", function () {
   
         await expect(auctionContract.connect(owner).endAuction()).revertedWith("Auction NFT is not escrowed.");
       });
+
+      let contract;
+      it('should revert if auction has not started', async () => {
+
+        const NFTDutchAuctionERC20 = await ethers.getContractFactory("NFTDutchAuctionERC20");
+
+        const { auctionContract, firstAcc } = await loadFixture(deployDutchAuctionTestFixture);
+
+        // Attempt to bid without calling escrowNFT
+        await expect(auctionContract.bid(ethers.utils.parseEther("1"))).to.be.revertedWith("Auction is not started yet!");
+    });    
+
+  //   it('should revert if NFT is not escrowed', async () => {
+
+  //     const NFTDutchAuctionERC20 = await ethers.getContractFactory("NFTDutchAuctionERC20");
+
+  //     const { auctionContract, firstAcc } = await loadFixture(deployDutchAuctionTestFixture);
+
+  //     // Attempt to call a function with the nftEscrowed modifier before transferring the NFT to the contract
+  //     await expect(auctionContract.endAuction())
+  //         .to.be.revertedWith("Auction NFT is not escrowed.");
+  // });
+
+
+    
+
   });
 });
+
+// describe("NFTDutchAuctionERC20", () => {
+//   let contract: NFTDutchAuctionERC20;
+//   let erc20;
+//   let erc721;
+//   let nftTokenId;
+//   let reservePrice;
+//   let numBlocksAuctionOpen;
+//   let offerPriceDecrement;
+
+//   beforeEach(async () => {
+//       // Get the signers
+//       const [owner] = await ethers.getSigners();
+
+//       // Deploy an ERC20 token contract
+//       erc20 = await ERC20.new("Test Token", "TST");
+//       await erc20.mint(owner.address, ethers.utils.parseEther("1000"));
+
+//       // Deploy an ERC721 token contract
+//       erc721 = await ERC721.new("Test NFT", "TNFT");
+//       nftTokenId = 1;
+//       await erc721.mint(owner.address, nftTokenId);
+
+//       // Set up the contract variables
+//       reservePrice = ethers.utils.parseEther("1");
+//       numBlocksAuctionOpen = 100;
+//       offerPriceDecrement = ethers.utils.parseEther("0.01");
+
+//       // Transfer the NFT to the owner
+//       await erc721.connect(owner).transferFrom(owner.address, contract.address, nftTokenId);
+
+//       // Get the contract factory
+//       const NFTDutchAuctionERC20 = await ethers.getContractFactory("NFTDutchAuctionERC20");
+
+//       // Deploy a new instance of the contract
+//       contract = await NFTDutchAuctionERC20.deploy(
+//           erc20.address,
+//           erc721.address,
+//           nftTokenId,
+//           reservePrice,
+//           numBlocksAuctionOpen,
+//           offerPriceDecrement
+//       );
+//       await contract.deployed();
+//   });
+
+//     it('should revert if auction has already ended', async () => {
+//       // Get the signers
+//       const [owner, bidder] = await ethers.getSigners();
+
+//       // Set up the auction
+//       await contract.connect(owner).escrowNFT();
+//       await contract.connect(bidder).bid(ethers.utils.parseEther("1"));
+//       // End the auction
+//       await contract.connect(owner).endAuction();
+//       // Attempt to end the auction again
+//       await expect(contract.connect(owner).endAuction())
+//           .to.be.revertedWith("Cannot halt the auction as it is successfully completed.");
+//   });
+
+//   it('should revert if auction is still in progress', async () => {
+//       // Get the signers
+//       const [owner] = await ethers.getSigners();
+
+//       // Set up the auction
+//       await contract.connect(owner).escrowNFT();
+//       // Attempt to end the auction before auctionCloseBlock
+//       await expect(contract.connect(owner).endAuction())
+//           .to.be.revertedWith("Cannot halt the auction as it is in the process.");
+//   });
+
+// });
