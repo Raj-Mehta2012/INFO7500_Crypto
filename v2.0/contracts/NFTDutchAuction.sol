@@ -45,7 +45,6 @@ contract NFTDutchAuction{
     //     auctionEnd = _auctionEnd;
     // }
 
-
     function bid() public payable
     {
         require(auctionStart == true, "Auction is not started yet!");
@@ -53,6 +52,11 @@ contract NFTDutchAuction{
         require(msg.value >= (reservePrice + (numBlocksAuctionOpen - ((block.number - startingBlock) * offerPriceDecrement))), "Your bid price is less than the required auction price.");
         finalize();
     }
+
+    // function getNftTokenId() public view returns (uint) {
+    //     return nftID;
+    // }
+
 
     function finalize() internal
     {

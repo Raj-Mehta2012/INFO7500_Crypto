@@ -4,6 +4,8 @@ import "@nomiclabs/hardhat-ethers";
 import { ethers } from "hardhat";
 import {expect} from 'chai'
 const hre = require("hardhat");
+import erc721ABI from '../artifacts/@openzeppelin/contracts/token/ERC721/ERC721.sol/ERC721.json';
+
 
 const _reservePrice = 100;
 const _numBlocksAuctionOpen = 50;
@@ -175,6 +177,47 @@ describe("NFT", function () {
       const { contract } = await loadFixture(fixture);
       await expect(contract.endAuction()).to.be.revertedWith("Invalid call, Only owner of this NFT can trigger this call.");
   });
+
+  // it('should not allow ending an already ended auction', async () => {
+  //   const [owner, bidder] = await ethers.getSigners();
+  //   const { contract } = await fixture();
+  
+  //   // Hardcode the address of the ERC721 contract
+  //   const erc721TokenAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+  
+  //   // Create an instance of the ERC721 contract
+  //   const erc721Contract = new ethers.Contract(
+  //     erc721TokenAddress,
+  //     erc721ABI.abi,
+  //     owner
+  //   );
+  
+  //   // Get the ID of the NFT
+  //   const nftTokenId = await contract.getNftTokenId();
+  
+  //   // Get the initial owner of the NFT
+  //   const initialOwner = await erc721Contract.ownerOf(nftTokenId);
+  
+  //   // Check if the initial owner matches the expected value
+  //   expect(initialOwner).to.equal(owner.address);
+  
+  //   // Escrow the NFT
+  //   await contract.connect(owner).escrowNFT();
+  
+  //   // Place a bid
+  //   await contract.connect(bidder).bid({ value: ethers.utils.parseEther("1.1") });
+  
+  //   // Get the current owner of the NFT
+  //   const currentOwner = await erc721Contract.ownerOf(nftTokenId);
+  
+  //   // Check if the current owner is not the initial owner
+  //   expect(currentOwner).to.not.equal(initialOwner);
+  
+  //   // Attempt to end the auction
+  //   await expect(contract.connect(owner).endAuction()).to.be.revertedWith(
+  //     "Cannot halt the auction as it is successfully completed."
+  //   );
+  // });
       
   });
 });
