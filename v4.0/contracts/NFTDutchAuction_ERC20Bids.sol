@@ -1,4 +1,6 @@
-//SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
+// Author: Raj Mehta
+// Version : 4.0
 pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
@@ -62,6 +64,10 @@ Initializable, OwnableUpgradeable, UUPSUpgradeable{
         require(auctionEnd == false && (block.number < auctionCloseBlock), "Bids are not being accepted, the auction has ended.");
         require(amount >= (currentPrice()), "Your bid price is less than the required auction price.");
         finalize(amount);
+    }
+
+    function setAuctionEnd(bool _auctionEnd) public {
+        auctionEnd = _auctionEnd;
     }
 
     function finalize(uint amount) 

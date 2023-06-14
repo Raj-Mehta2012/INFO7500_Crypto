@@ -182,6 +182,31 @@ describe("DutchAuction", function () {
   
         await expect(auctionContract.connect(owner).endAuction()).revertedWith("Auction NFT is not escrowed.");
       });
+
+      it('should revert if bid is called before auction starts', async () => {
+        const { auctionContract, owner, firstAcc } = await loadFixture(deployDutchAuctionTestFixture);
+        const amount = ethers.utils.parseEther('1');
+        await expect(auctionContract.bid(amount)).to.be.revertedWith('Auction is not started yet!');
+      });
+      
+      it('should revert if endAuction is called before NFT is escrowed', async () => {
+        const { auctionContract, owner, firstAcc } = await loadFixture(deployDutchAuctionTestFixture);
+        await expect(auctionContract.endAuction()).to.be.revertedWith('Auction NFT is not escrowed.');
+      });
+      
+      ///
+      it("should not allow to end auction if it is already completed", async function () {
+        // Escrow the NFT
+        const { auctionContract, owner, firstAcc } = await loadFixture(deployDutchAuctionTestFixture);
+        await auctionContract.connect(firstAcc).escrowNFT();
+        
+        // Set auctionEnd to true to simulate a completed auction
+        await auctionContract.setAuctionEnd(true);
+        
+        // Try to end the auction and expect it to fail
+        await expect(auctionContract.connect(firstAcc).endAuction()).to.be.revertedWith("Cannot halt the auction as it is successfully completed.");
+    });
+      
   });
 
   describe("Upgradable", () => 

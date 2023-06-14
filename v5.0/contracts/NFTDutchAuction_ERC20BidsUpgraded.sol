@@ -1,4 +1,6 @@
-//SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
+// Author: Raj Mehta
+// Version : 5.0
 pragma solidity ^0.8.0;
 
 import "./NFTDutchAuction_ERC20Bids.sol";

@@ -1,6 +1,6 @@
-// // SPDX-License-Identifier: MIT
-// // Author: Raj Mehta
-// // Version : 1.0
+// SPDX-License-Identifier: MIT
+// Author: Raj Mehta
+// Version : 1.0
 
 pragma solidity >=0.7.0 <0.9.0;
 
