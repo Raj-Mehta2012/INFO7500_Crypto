@@ -6,7 +6,7 @@ typechain
 typechain-types
 
 # Hardhat files
-.config.ts
+.ts
 cache
 artifacts
 
